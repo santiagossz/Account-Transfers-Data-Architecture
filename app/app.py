@@ -18,13 +18,13 @@ def image_layout():
     """
    
     """
-
+    a=0
 
     return html.Div([
     dcc.Upload(
         id='upload-data',
         children=html.Div([
-            'Drag and Drop or ',
+            'Drag and Drddop or ',
             html.A('Select Files')
         ]),
         accept='.zip'
@@ -55,7 +55,8 @@ def update_output(file):
 
 
 
-
+if __name__ == '__main__':
+    app.run_server(debug=True, host='0.0.0.0')
 
 
 
@@ -133,5 +134,3 @@ def update_output(file):
 #     return img, bars
 
 
-if __name__ == '__main__':
-    app.run_server(debug=True, host='0.0.0.0')
