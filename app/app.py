@@ -3,8 +3,10 @@ import dash
 from dash import dcc
 from dash import html
 from dash.dependencies import Input, Output
+import dash_table
 
-from api.production_env.production import Production
+
+from api.api import API
 
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -12,19 +14,18 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 # dash application
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
+api=API()
 
-
-def image_layout():
+def updload_files():
     """
    
     """
-    a=0
 
     return html.Div([
     dcc.Upload(
         id='upload-data',
         children=html.Div([
-            'Drag and Drddop or ',
+            'Drag and Drop or ',
             html.A('Select Files')
         ]),
         accept='.zip'
@@ -33,7 +34,7 @@ def image_layout():
 ])
 
 
-app.layout = image_layout
+app.layout = updload_files
 
 
 
@@ -46,9 +47,13 @@ def update_output(file):
     if file :
         print('-------------start process-------------')
         start_time = time.time()
-        store_file=Production().store_into_dwh(file)
+        api.store_into_dwh(file)
+        df=api.reports()
         print(f"-------------{round((time.time() - start_time)/60,2)} minutes-------------")
-        return True
+        return html.Div([dash_table.DataTable(
+            data=df.to_dict('records'),
+            columns=[{'name': i, 'id': i} for i in df.columns]
+        )])
     else:
         print('-------------')
         return False

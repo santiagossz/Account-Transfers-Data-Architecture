@@ -3,12 +3,14 @@ import io
 import pandas as pd
 from zipfile import ZipFile
 
-from api.production_env.db.db_connection import NU_DWH
+from api.production_env.db_connection import NU_DWH
 
-class Production():
+class API():
 
     def __init__(self):
         self.csv_tables=[]
+        self.nu_dwh=NU_DWH('localhost','nu_dwh','postgres','Tumarnamki55')
+
 
         super().__init__() 
 
@@ -31,8 +33,11 @@ class Production():
         
     def store_into_dwh(self,file):
         self.extract_data_from_zip(file)
-        nu_dwh=NU_DWH('localhost','nu_dwh','postgres','Tumarnamki55')
-        nu_dwh.create_schema(self.schemas_script)
-        nu_dwh.fetch_transformed_tables(self.csv_tables)
-        nu_dwh.create_schema(self.schemas_script,add_relations=True)
+        self.nu_dwh.create_schema(self.schemas_script)
+        self.nu_dwh.fetch_transformed_tables(self.csv_tables)
+        self.nu_dwh.create_schema(self.schemas_script,add_relations=True)
         print('-------------schema succesfully created-------------')
+        
+
+    def reports(self):
+        return self.nu_dwh.get_db(self.case_sql_script)
