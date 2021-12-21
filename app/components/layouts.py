@@ -3,7 +3,7 @@ from dash import html
 from dash import dash_table
 from dash.html.Div import Div
 
-from .metrics_functions import plot_status,plot_comparisson
+from .metrics_functions import status_comp,failed_transfers
 
 def set_layout():
     return html.Div([
@@ -18,6 +18,8 @@ def set_layout():
      
     ),
     html.Br(),
+    dcc.Link('Upload Files', href='/'),
+    html.Br(),
     dcc.Link('Account Monthly Balance', href='/account-monthly-balance'),
     html.Br(),
     dcc.Link('PIX Metrics', href='/pix-metrics'),
@@ -28,7 +30,7 @@ def set_layout():
 
 def index_layout(filename):
     return html.Div([
-                html.H6(filename)
+                html.H6(f'File: {filename} uploaded sucessfully')
                 ])
 
 def amb_layout(df):
@@ -41,15 +43,15 @@ def amb_layout(df):
             
         )])
     
-def pix_layout(pix_df,failed_tr_df):
-    status=plot_status(pix_df,failed_tr_df)
-    comparisson=plot_comparisson(pix_df,failed_tr_df)
+def pix_layout(pix_df,tr_df):
+    status=status_comp(pix_df,tr_df)
+    failed=failed_transfers(pix_df)
     return html.Div([
             html.Div([
             dcc.Graph(figure=status)],
             style={'display': 'flex  '}),
              html.Div([
-            html.Div([dcc.Graph(figure=comparisson)])
+            html.Div([dcc.Graph(figure=failed)])
             # ,html.Div([dcc.Graph(figure=comparisson[1])])
             ]
             )

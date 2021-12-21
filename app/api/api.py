@@ -9,7 +9,7 @@ class API():
 
     def __init__(self,file):
 
-        # self.get_data_from_zip(file)
+        self.get_data_from_zip(file)
         self.nu_dwh=NU_DWH('localhost','nu_dwh','postgres','Tumarnamki55')
 
 

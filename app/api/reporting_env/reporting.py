@@ -10,7 +10,7 @@ FROM PIX_MOVEMENTS PIX
 JOIN TIME
 ON PIX.PIX_REQUESTED_AT=TIME.TIME_ID 
 """
-failed_tr="""
+tr="""
 WITH TIME AS (
 SELECT TIME_ID,
 (CASE WHEN action_timestamp::timestamp::time<='15:00:00'::time AND action_timestamp::timestamp::time>='09:00:00'::time THEN 'business_hour'

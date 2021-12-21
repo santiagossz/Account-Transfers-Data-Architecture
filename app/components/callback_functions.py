@@ -19,9 +19,9 @@ def update_output(pathname, file, filename):
         return layouts.amb_layout(df)
     elif pathname=='/pix-metrics':
         pix_df = api.reports(rp.pix,False)
-        failed_tr_df=api.reports(rp.failed_tr,False)
+        tr_df=api.reports(rp.tr,False)
 
-        return layouts.pix_layout(pix_df,failed_tr_df)
+        return layouts.pix_layout(pix_df,tr_df)
 
 
 
@@ -38,14 +38,14 @@ def show_upload(pathname):
             'margin': '10px',
         }
     else:
-        return {
-            'width': '100%',
-            'height': '60px',
-            'lineHeight': '60px',
-            'borderWidth': '1px',
-            'borderStyle': 'dashed',
-            'borderRadius': '5px',
-            'textAlign': 'center',
-            'margin': '10px',
-        }
-        # return {'display': 'none'}
+        # return {
+        #     'width': '100%',
+        #     'height': '60px',
+        #     'lineHeight': '60px',
+        #     'borderWidth': '1px',
+        #     'borderStyle': 'dashed',
+        #     'borderRadius': '5px',
+        #     'textAlign': 'center',
+        #     'margin': '10px',
+        # }
+        return {'display': 'none'}
