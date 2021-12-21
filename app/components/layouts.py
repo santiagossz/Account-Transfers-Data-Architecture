@@ -3,7 +3,7 @@ from dash import html
 from dash import dash_table
 from dash.html.Div import Div
 
-from .metrics_functions import total_status,transaction_status
+from .metrics_functions import plot_status,plot_comparisson
 
 def set_layout():
     return html.Div([
@@ -41,15 +41,14 @@ def amb_layout(df):
             
         )])
     
-def pix_layout(df):
-    pie_status=total_status(df)
-    bar_status=transaction_status(df)
+def pix_layout(pix_df,failed_tr_df):
+    status=plot_status(pix_df)
+    comparisson=plot_comparisson(pix_df,failed_tr_df)
     return html.Div([
-            html.H6('PIX Transaction status Metrics 2020'),
-            
+            # html.H6('PIX Transaction status Metrics 2020'),
             html.Div([
-            dcc.Graph(figure=pie_status),
-            dcc.Graph(figure=bar_status)],
-            style={'display': 'flex  '})]
-            ,style={'textAlign':'center'}
-        )
+            dcc.Graph(figure=status)],
+            style={'display': 'flex  '}),
+            html.Div([dcc.Graph(figure=comparisson)])
+            ],
+            style={'display': 'flex  '} )

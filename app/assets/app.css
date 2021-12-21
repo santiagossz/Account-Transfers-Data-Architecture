@@ -9,6 +9,7 @@
     margin: 10px;
 } */
 
-.metrics{
-    color: red;
+body{
+    margin: 0;
+    padding: 2rem;
 }

@@ -1,9 +1,41 @@
+pix="""
+WITH TIME AS (
+SELECT TIME_ID,
+(CASE WHEN action_timestamp::timestamp::time<='15:00:00'::time AND action_timestamp::timestamp::time>='09:00:00'::time THEN 'business_hour'
+ELSE 'non_business_hour' END) IS_BUSINESS_HOUR
+from d_time
+)
+SELECT ACCOUNT_ID,IN_OR_OUT,PIX_AMOUNT,PIX.STATUS,TIME.IS_BUSINESS_HOUR
+FROM PIX_MOVEMENTS PIX
+JOIN TIME
+ON PIX.PIX_REQUESTED_AT=TIME.TIME_ID 
+"""
+failed_tr="""
+WITH TIME AS (
+SELECT TIME_ID,
+(CASE WHEN action_timestamp::timestamp::time<='15:00:00'::time AND action_timestamp::timestamp::time>='09:00:00'::time THEN 'business_hour'
+ELSE 'non_business_hour' END) IS_BUSINESS_HOUR
+from d_time
+),
+T_IN AS (
+	SELECT IS_BUSINESS_HOUR,ACCOUNT_ID,AMOUNT,STATUS
+	FROM TRANSFER_INS TI
+	JOIN TIME
+	ON TI.TRANSACTION_REQUESTED_AT=TIME.TIME_ID 
+	WHERE TI.STATUS='failed'
+	),
+	T_OUT AS (
+	SELECT IS_BUSINESS_HOUR,ACCOUNT_ID,AMOUNT,STATUS
+	FROM TRANSFER_OUTS TOT
+	JOIN TIME
+	ON TOT.TRANSACTION_REQUESTED_AT=TIME.TIME_ID 
+	WHERE TOT.STATUS='failed'
+	)
 
+SELECT *
+FROM T_IN
+UNION
+SELECT * 
+FROM T_OUT
 
-class Reports():
-    def __init__(self):
-        super().__init__()
-
-    def AMB():
-        return None
-    
+"""

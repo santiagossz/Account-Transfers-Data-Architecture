@@ -1,7 +1,7 @@
 import time
 from api.api import API
-from components import layouts
-
+from components import layouts 
+import api.reporting_env.reporting as rp
 
 def update_output(pathname, file, filename):
     start_time = time.time()
@@ -18,8 +18,10 @@ def update_output(pathname, file, filename):
             f"-------------{round((time.time() - start_time)/60,2)} minutes  to create the account monthly balance report-------------")        
         return layouts.amb_layout(df)
     elif pathname=='/pix-metrics':
-        df = api.reports('SELECT * FROM PIX_MOVEMENTS',False)
-        return layouts.pix_layout(df)
+        pix_df = api.reports(rp.pix,False)
+        failed_tr_df=api.reports(rp.failed_tr,False)
+
+        return layouts.pix_layout(pix_df,failed_tr_df)
 
 
 
