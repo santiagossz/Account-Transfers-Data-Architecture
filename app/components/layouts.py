@@ -42,13 +42,16 @@ def amb_layout(df):
         )])
     
 def pix_layout(pix_df,failed_tr_df):
-    status=plot_status(pix_df)
+    status=plot_status(pix_df,failed_tr_df)
     comparisson=plot_comparisson(pix_df,failed_tr_df)
     return html.Div([
-            # html.H6('PIX Transaction status Metrics 2020'),
             html.Div([
             dcc.Graph(figure=status)],
             style={'display': 'flex  '}),
+             html.Div([
             html.Div([dcc.Graph(figure=comparisson)])
+            # ,html.Div([dcc.Graph(figure=comparisson[1])])
+            ]
+            )
             ],
             style={'display': 'flex  '} )
