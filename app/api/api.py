@@ -9,7 +9,7 @@ class API():
 
     def __init__(self,file):
 
-        self.get_data_from_zip(file)
+        # self.get_data_from_zip(file)
         self.nu_dwh=NU_DWH('localhost','nu_dwh','postgres','Tumarnamki55')
 
 
@@ -46,6 +46,10 @@ class API():
         print('-------------schema succesfully created-------------')
         
 
-    def reports(self):
-        self.read_data_from_zip()
-        return self.nu_dwh.get_db(self.case_sql_script)
+    def reports(self,script='',amb=True):
+        if amb:
+            self.read_data_from_zip()
+            script=self.case_sql_script
+        else:
+            scipt=script
+        return self.nu_dwh.get_db(script)
