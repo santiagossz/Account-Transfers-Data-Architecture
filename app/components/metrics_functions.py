@@ -1,4 +1,5 @@
 
+import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -36,5 +37,21 @@ def failed_transfers(pix_df):
     fig.update_annotations(font_size=11)
 
 
+    return fig
+
+def growth_week(pix_df):
+    g_week=pix_df[pix_df['status']=='completed'].groupby('week')['pix_amount'].count()
+    fig=px.line(x=g_week.index, y=g_week.values,labels={'x':'Week', 'y':'Number of Transactions'})
+    fig.update_layout(title='Growth of PIX transactions across 2020 (weeks) ')
+
+    return fig
+
+def pix_states(pix_df):
+    state=pix_df[pix_df['status']=='completed'].groupby('state')['pix_amount'].count()
+    fig=go.Figure(go.Bar(x=state.index,y=state.values))
+    fig.update_layout(
+    title='PIX Transactions among states',
+    xaxis_tickfont_size=14,
+    yaxis=dict(title='Number of Transactions'))
     return fig
 
